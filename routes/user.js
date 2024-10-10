@@ -38,7 +38,15 @@ userRouter.post("/signup",async (req,res)=>{
             firstName,
             lastName
         })
-        res.send("Database Updated")
+        const user = await userModel.findOne({
+            email
+        })
+
+        const token = jwt.sign({
+            id:user._id
+        },JWT_USER_PASSWORD)
+
+        res.json({token:token})
     
     }
     catch(e){
